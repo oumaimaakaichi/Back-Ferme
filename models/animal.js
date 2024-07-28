@@ -39,7 +39,7 @@ const animalSchema = new mongoose.Schema({
     required: function() { return this.estPuce; },
   },
 }, {
-  timestamps: true, // Ajoute les champs createdAt et updatedAt
+  timestamps: true, 
 });
 
 const Animal = mongoose.model("Animal", animalSchema);

@@ -1,7 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/utilisateur");
 const userRoutes = express.Router();
-const utilisateur = require("../models/utilisateur"); // Correction du chemin d'importation
+const utilisateur = require("../models/utilisateur"); 
 const multer = require("multer");
 const bcrypt = require("bcrypt");
 
@@ -37,6 +37,7 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
         Num_tel,
         cin,
         adresse,
+        avatar,
         role
       });
   

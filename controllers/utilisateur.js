@@ -51,7 +51,7 @@ const ajoute = (req, res) => {
         
         avatar: req.file
           ? `http://localhost:3000/uploads/${req.file.filename}`
-          : "", // Vérifiez si un fichier a été téléchargé avant d'accéder à ses propriétés
+          : "", 
       });
 
       await nouveauUtilisateur.save();
@@ -257,9 +257,9 @@ const emailyni = (req, res) => {
 
 
 const generateRandomPassword = () => {
-  const length = 8; // Longueur du mot de passe
+  const length = 8; 
   const charset =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Caractères autorisés
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; 
   let newPassword = "";
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * charset.length);
