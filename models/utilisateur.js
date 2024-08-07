@@ -10,9 +10,13 @@ var schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Ferme", "Employeur"],
+    enum: ["Ferme", "Employeur" , "vétérinaire"],
   },
-  //etat
+  etat:{
+    type:String,
+    enum:["Actif" , "Inactif"],
+    default:"Actif"
+  },
   email: {
     type: String,
     required: true,
@@ -37,7 +41,11 @@ var schema = new mongoose.Schema({
   adresse: {
     type: String,
   },
- 
+  proprietaire: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Utilisateur",
+    required: true,
+  },
 
 });
 

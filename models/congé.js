@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 
 const congeSchema = new mongoose.Schema({
   dateDébut: {
-    type: String,
+    type: Date,
     required: true,
   },
   dateFin: {
-    type: String,
+    type: Date,
   },
   status: { 
     type: String,
-    enum: ['en attente', 'accepter', 'refuser'],
-    default: 'en attente',
+    enum: ['En attente', 'Accepter', 'Refuser'],
+    default: 'En attente',
   },
   employeur: {
     type: mongoose.Schema.Types.ObjectId,

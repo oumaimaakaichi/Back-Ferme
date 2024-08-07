@@ -7,13 +7,16 @@ const animalSchema = new mongoose.Schema({
   },
   espece: {
     type: String,
-    required: true,
+   
   },
   race: {
     type: String,
   },
   age: {
     type: Number,
+  },
+  image:{
+    type:String
   },
   poids: {
     type: Number,
@@ -32,7 +35,7 @@ const animalSchema = new mongoose.Schema({
   }],
   estPuce: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   numeroPuce: {
     type: String,
