@@ -5,12 +5,14 @@ const controller=require('../controllers/congé')
 const Utilisateur=require('../models/utilisateur')
 congeRoutes.post("/add-conge", async (req, res) => {
   try {
-    const { dateDébut, dateFin, employeur } = req.body;
+    const { dateDébut, dateFin,raison, employeur  } = req.body;
     console.log('Employeur ID:', employeur);
     const nouveauConge = new Conge({
         dateDébut,
       dateFin,
+      raison,
       employeur,
+    
     });
     await nouveauConge.save();
     res.status(201).json({

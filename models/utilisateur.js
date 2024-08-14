@@ -47,6 +47,19 @@ var schema = new mongoose.Schema({
     required: true,
   },
 
+
+  taches: [{
+    tache: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Tache',
+    },
+    status: {
+      type: String,
+      enum: ['En attente', 'Terminé'],
+      default: 'En attente'
+    },
+  }],
+
 });
 
 const Utilisateur = mongoose.model("Utilisateur", schema);

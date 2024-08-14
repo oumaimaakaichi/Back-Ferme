@@ -8,6 +8,9 @@ const congeSchema = new mongoose.Schema({
   dateFin: {
     type: Date,
   },
+  raison:{
+type:String
+  },
   status: { 
     type: String,
     enum: ['En attente', 'Accepter', 'Refuser'],

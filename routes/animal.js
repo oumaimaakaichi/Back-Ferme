@@ -4,26 +4,26 @@ const Animal = require("../models/animal");
 const controller = require('../controllers/animal');
 const multer = require("multer");
 
-// Configuration du stockage avec Multer
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Dossier de destination pour les fichiers téléchargés
+   
     cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
-    // Nom du fichier enregistré avec un horodatage pour éviter les doublons
+
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
-// Configuration de Multer avec le stockage défini
+
 const upload = multer({ storage: storage });
 
 animalRoutes.post("/ajouter-animal", upload.fields([
   { name: "image", maxCount: 1 }
 ]), async (req, res) => {
   try {
-    console.log(req.files); // Vérifiez la structure ici
+    console.log(req.files); 
 
     let imagePath = "";
 
@@ -65,7 +65,7 @@ animalRoutes.post("/ajouter-animal", upload.fields([
 });
 
 
-// Routes pour d'autres opérations
+
 animalRoutes.delete("/api/deleteAni/:id", controller.deleteConge);
 animalRoutes.patch("/api/updateAn/:id", controller.updatee);
 animalRoutes.get("/api/findIDAni/:id", controller.findID);

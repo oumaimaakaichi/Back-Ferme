@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 
 
 const storage = require("../midleware/upload");
+const Utilisateur = require("../models/utilisateur");
 
 
 
@@ -61,13 +62,13 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
   });
   
   userRoutes.post("/upload-image", upload.single("avatar"), (req, res) => {
-    res.send("http://192.168.148.216:3000/uploads/" + req.file.filename);
+    res.send("http://192.168.195.216:3000/uploads/" + req.file.filename);
   });
 
 
 userRoutes.post("/upload-doc", upload.single("image"), (req, res) => {
  
-  res.send("http://192.168.148.216:3000/uploads/" + req.file.filename);
+  res.send("http://192.168.195.216:3000/uploads/" + req.file.filename);
 });
 
 
@@ -75,5 +76,46 @@ userRoutes.get("/userById/:id", userController.getbyid);
 userRoutes.post("/login", userController.login);
 userRoutes.put("/modifier/:id", userController.modifier);
 userRoutes.post("/emailyni", userController.emailyni);
+userRoutes.get("/users-by-owner/:ownerId", async (req, res) => {
+  try {
+    const { ownerId } = req.params;
+    const users = await Utilisateur.find({ proprietaire: ownerId });
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
+
+
+userRoutes.get('/employeur/:id/taches', async (req, res) => {
+  try {
+    const employeurId = req.params.id;
+
+  
+    const employeur = await Utilisateur.findById(employeurId)
+      .populate({
+        path: 'taches.tache',
+        select: 'tache description' 
+      })
+      .exec();
+    
+    if (!employeur) {
+      return res.status(404).json({ message: 'Employeur not found' });
+    }
+
+  
+    const taches = employeur.taches.map(tacheEntry => ({
+      tache: tacheEntry.tache, 
+      description:tacheEntry.description,
+      status: tacheEntry.status 
+    }));
+
+    res.json(taches);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = userRoutes;
