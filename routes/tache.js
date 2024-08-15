@@ -4,11 +4,12 @@ const Tache = require("../models/taches");
 const Utilisateur =require('../models/utilisateur')
 TacheRoute.post("/add-tache", async (req, res) => {
   try {
-    const { tache, employeur } = req.body;
+    const { tache, proprietaire ,description } = req.body;
 
     const nouveauTache = new Tache({
       tache,
-      employeur
+      description,
+      proprietaire
     });
     await nouveauTache.save();
     res.status(201).json({
@@ -131,7 +132,7 @@ TacheRoute.post('/assign-task', async (req, res) => {
      
       user.taches.push({ tache: taskId, status: 'En attente' });
   
-      // Save the user
+      
       await user.save();
   
       res.status(200).json({ message: 'Task assigned successfully', user });

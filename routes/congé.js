@@ -58,7 +58,7 @@ congeRoutes.get('/conges/:proprietaireId', async (req, res) => {
     const employeursIds = utilisateurs.map(user => user._id);
 
    
-    const conges = await Conge.find({ employeur: { $in: employeursIds } }).populate('employeur', 'nom prenom email Num_tel cin'); // Optionnel : peupler les détails de l'employeur
+    const conges = await Conge.find({ employeur: { $in: employeursIds } }).populate('employeur', 'nom prenom email Num_tel cin');
 
     if (!conges.length) {
       return res.status(404).json({ message: 'Aucun congé trouvé pour ces employés.' });
