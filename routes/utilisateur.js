@@ -79,14 +79,23 @@ userRoutes.post("/emailyni", userController.emailyni);
 userRoutes.get("/users-by-owner/:ownerId", async (req, res) => {
   try {
     const { ownerId } = req.params;
-    const users = await Utilisateur.find({ proprietaire: ownerId });
+    const users = await Utilisateur.find({ proprietaire: ownerId ,role:"Employeur"});
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
   }
 });
-
+userRoutes.get("/AllFermes", async (req, res) => {
+  try {
+   
+    const users = await Utilisateur.find({ role: "Ferme"});
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
 userRoutes.get('/employeur/:id/taches', async (req, res) => {
@@ -116,6 +125,48 @@ userRoutes.get('/employeur/:id/taches', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+userRoutes.get('/statistics', async (req, res) => {
+  try {
+   
+    const statistics = await Utilisateur.aggregate([
+   
+      { $match: { role: 'Ferme' } },
+      {
+        $lookup: {
+          from: 'utilisateurs', 
+          localField: '_id',
+          foreignField: 'proprietaire',
+          as: 'employeurs',
+        },
+      },
+      {
+        $lookup: {
+          from: 'animals', 
+          localField: '_id',
+          foreignField: 'proprietaire',
+          as: 'animaux',
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          nom: 1,
+          prenom: 1,
+          numEmployeurs: { $size: '$employeurs' },
+          numAnimaux: { $size: '$animaux' },
+        },
+      },
+    ]);
+
+    
+    res.json(statistics);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching statistics.' });
   }
 });
 module.exports = userRoutes;

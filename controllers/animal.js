@@ -1,5 +1,38 @@
 var Animal = require("../models/animal");
 
+
+exports.getAllVaccinations = async (req, res) => {
+  try {
+    const { animalId } = req.params;
+
+    const animal = await Animal.findById(animalId);
+    if (!animal) {
+      return res.status(404).json({ message: "Animal not found" });
+    }
+
+    res.status(200).json({ vaccinations: animal.vaccinations });
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving vaccinations", error });
+  }
+};
+exports.addVaccination = async (req, res) => {
+  try {
+    const { animalId } = req.params;
+    const { nom, date } = req.body;
+
+    const animal = await Animal.findById(animalId);
+    if (!animal) {
+      return res.status(404).json({ message: "Animal not found" });
+    }
+
+    animal.vaccinations.push({ nom, date });
+    await animal.save();
+
+    res.status(200).json({ message: "Vaccination added successfully", animal });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding vaccination", error });
+  }
+};
 exports.deleteConge = (req, res) => {
   const id = req.params.id;
 

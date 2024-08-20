@@ -2,7 +2,7 @@ const utilisateur = require("../models/utilisateur");
 const express = require("express");
 
 const multer = require("multer");
-
+require('dotenv').config();
 
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -181,10 +181,11 @@ const modifier = (req, res) => {
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "mariemmhiri82@gmail.com",
-    pass: "izcm jpry ncke ifqn",
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
   },
 });
+
 
 
 const updateUserPassword = async (email, newPassword) => {
@@ -212,6 +213,9 @@ const updateUserPassword = async (email, newPassword) => {
 const bcrypt = require("bcrypt");
 
 const emailyni = (req, res) => {
+  console.log("GMAIL_USER:", process.env.GMAIL_USER);
+console.log("GMAIL_PASS:", process.env.GMAIL_PASS);
+
   const { email } = req.body;
 
  
@@ -232,7 +236,7 @@ const emailyni = (req, res) => {
   
     transporter.sendMail(
       {
-        from: "trikiasma31@gmail.com",
+        from:process.env.GMAIL_USER,
         to: email,
         subject: "Réinitialisation de mot de passe",
         text: `Votre mot de passe a été réinitialisé avec succès. Voici votre nouveau mot de passe : ${newPassword}. Pour des raisons de sécurité, veuillez le changer dès que possible.`,

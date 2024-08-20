@@ -36,7 +36,7 @@ congeRoutes.get("/conge/:id", async (req, res) => {
   try {
     const conges = await Conge.find({
       employeur: req.params.id,
-    });
+    }).populate('employeur', 'nom prenom email Num_tel cin');;
     res.json(conges);
   } catch (error) {
     res.status(500).json({ message: error.message });

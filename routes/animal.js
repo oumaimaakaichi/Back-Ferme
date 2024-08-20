@@ -28,7 +28,7 @@ animalRoutes.post("/ajouter-animal", upload.fields([
     let imagePath = "";
 
     if (req.files && req.files["image"] && req.files["image"][0]) {
-      imagePath = "http://192.168.148.216:3000/uploads/" + req.files["image"][0].filename;
+      imagePath = "http://192.168.195.216:3000/uploads/" + req.files["image"][0].filename;
     } else {
       console.log("Aucun fichier image trouvé");
     }
@@ -69,7 +69,8 @@ animalRoutes.post("/ajouter-animal", upload.fields([
 animalRoutes.delete("/api/deleteAni/:id", controller.deleteConge);
 animalRoutes.patch("/api/updateAn/:id", controller.updatee);
 animalRoutes.get("/api/findIDAni/:id", controller.findID);
-
+animalRoutes.post("/addVaccination/:animalId", controller.addVaccination);
+animalRoutes.get("/getAllVaccinations/:animalId", controller.getAllVaccinations);
 animalRoutes.get("/AnimalParFerme/:id", async (req, res) => {
   try {
     const animals = await Animal.find({

@@ -10,7 +10,7 @@ var schema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Ferme", "Employeur" , "vétérinaire"],
+    enum: ["Ferme", "Employeur" , "vétérinaire" , "admin"],
   },
   etat:{
     type:String,
@@ -20,7 +20,7 @@ var schema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+  
   },
   avatar: {
     type: String,
@@ -44,7 +44,7 @@ var schema = new mongoose.Schema({
   proprietaire: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Utilisateur",
-    required: true,
+   
   },
 
 
