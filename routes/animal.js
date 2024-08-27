@@ -28,7 +28,7 @@ animalRoutes.post("/ajouter-animal", upload.fields([
     let imagePath = "";
 
     if (req.files && req.files["image"] && req.files["image"][0]) {
-      imagePath = "http://192.168.195.216:3000/uploads/" + req.files["image"][0].filename;
+      imagePath = "http://192.168.244.216:3000/uploads/" + req.files["image"][0].filename;
     } else {
       console.log("Aucun fichier image trouvé");
     }
@@ -79,6 +79,17 @@ animalRoutes.get("/AnimalParFerme/:id", async (req, res) => {
     res.json(animals);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+animalRoutes.get('/total-animals', async (req, res) => {
+  try {
+    const totalAnimals = await Animal.countDocuments();
+    res.status(200).json({ totalAnimals });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving total animals', error });
   }
 });
 

@@ -4,12 +4,8 @@ const userRoutes = express.Router();
 const utilisateur = require("../models/utilisateur"); 
 const multer = require("multer");
 const bcrypt = require("bcrypt");
-
-
 const storage = require("../midleware/upload");
 const Utilisateur = require("../models/utilisateur");
-
-
 
 const upload = multer({ storage: storage });
 
@@ -43,7 +39,7 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
       });
   
       if (req.file) {
-        nouveauUtilisateur.avatar = "http://192.168.148.216:3000/uploads/" + req.file.filename;
+        nouveauUtilisateur.avatar = "http://192.168.244.216:3000/uploads/" + req.file.filename;
       }
   
       await nouveauUtilisateur.save();
@@ -62,13 +58,13 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
   });
   
   userRoutes.post("/upload-image", upload.single("avatar"), (req, res) => {
-    res.send("http://192.168.195.216:3000/uploads/" + req.file.filename);
+    res.send("http://192.168.244.216:3000/uploads/" + req.file.filename);
   });
 
 
 userRoutes.post("/upload-doc", upload.single("image"), (req, res) => {
  
-  res.send("http://192.168.195.216:3000/uploads/" + req.file.filename);
+  res.send("http://192.168.244.216:3000/uploads/" + req.file.filename);
 });
 
 
@@ -80,6 +76,20 @@ userRoutes.get("/users-by-owner/:ownerId", async (req, res) => {
   try {
     const { ownerId } = req.params;
     const users = await Utilisateur.find({ proprietaire: ownerId ,role:"Employeur"});
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+
+userRoutes.get("/Vete-by-owner/:ownerId", async (req, res) => {
+  try {
+    const { ownerId } = req.params;
+    const users = await Utilisateur.find({ proprietaire: ownerId ,role:"vétérinaire"});
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
@@ -167,6 +177,23 @@ userRoutes.get('/statistics', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while fetching statistics.' });
+  }
+});
+
+
+userRoutes.get('/total-users', async (req, res) => {
+  try {
+    const totalEmployeurs = await Utilisateur.countDocuments({ role: 'Employeur' });
+    const totalVeterinaires = await Utilisateur.countDocuments({ role: 'vétérinaire' });
+    const totalFermes = await Utilisateur.countDocuments({ role: 'Ferme' });
+
+    res.status(200).json({
+      totalEmployeurs,
+      totalVeterinaires,
+      totalFermes,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving users count', error });
   }
 });
 module.exports = userRoutes;
