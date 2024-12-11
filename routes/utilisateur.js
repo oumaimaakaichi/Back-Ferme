@@ -39,7 +39,7 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
       });
   
       if (req.file) {
-        nouveauUtilisateur.avatar = "http://192.168.244.216:3000/uploads/" + req.file.filename;
+        nouveauUtilisateur.avatar = "http://192.168.177.216:3000/uploads/" + req.file.filename;
       }
   
       await nouveauUtilisateur.save();
@@ -58,13 +58,13 @@ userRoutes.post("/add-user", upload.single("avatar"), async (req, res) => {
   });
   
   userRoutes.post("/upload-image", upload.single("avatar"), (req, res) => {
-    res.send("http://192.168.244.216:3000/uploads/" + req.file.filename);
+    res.send("http://192.168.177.216:3000/uploads/" + req.file.filename);
   });
 
 
 userRoutes.post("/upload-doc", upload.single("image"), (req, res) => {
  
-  res.send("http://192.168.244.216:3000/uploads/" + req.file.filename);
+  res.send("http://192.168.177.216:3000/uploads/" + req.file.filename);
 });
 
 

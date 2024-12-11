@@ -28,7 +28,7 @@ animalRoutes.post("/ajouter-animal", upload.fields([
     let imagePath = "";
 
     if (req.files && req.files["image"] && req.files["image"][0]) {
-      imagePath = "http://192.168.244.216:3000/uploads/" + req.files["image"][0].filename;
+      imagePath = "http://192.168.177.216:3000/uploads/" + req.files["image"][0].filename;
     } else {
       console.log("Aucun fichier image trouvé");
     }
@@ -82,7 +82,32 @@ animalRoutes.get("/AnimalParFerme/:id", async (req, res) => {
   }
 });
 
+animalRoutes.get('/animals-by-year', async (req, res) => {
+  try {
+    const results = await Animal.aggregate([
+      {
+        $group: {
+          _id: { $year: "$createdAt" },
+          totalAnimals: { $sum: 1 } 
+        }
+      },
+      {
+        $sort: { _id: 1 } 
+      }
+    ]);
 
+   
+    const formattedResults = results.map(item => ({
+      year: item._id,
+      totalAnimals: item.totalAnimals
+    }));
+
+    res.json(formattedResults);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données des animaux par année :", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des données" });
+  }
+});
 
 animalRoutes.get('/total-animals', async (req, res) => {
   try {
